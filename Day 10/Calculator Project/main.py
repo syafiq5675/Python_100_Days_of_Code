@@ -24,7 +24,7 @@ def calculator():
     continue_calculation = True
     initial_number = float(input("What's the first number?:  "))
 
-    while continue_calculation == True:
+    while continue_calculation:
 
         chosen_operation = input("+\n-\n*\n/\nPick an operation:  ")
         second_number = float(input("What's the next number?:  "))
@@ -38,7 +38,7 @@ def calculator():
             initial_number = result
         elif should_continue == "n":
             print("\n" * 20)
-            calculator()
+            initial_number = float(input("What's the first number?:  "))
         elif should_continue == "exit":
             continue_calculation = False
         else:
