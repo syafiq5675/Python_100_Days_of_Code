@@ -52,5 +52,3 @@ def blackjack():
     elif get_card == 'y':
         deal_card(user_hand)
         get_card = input("Type 'y' to get another card, type 'n' to pass: ")
-
-blackjack()
