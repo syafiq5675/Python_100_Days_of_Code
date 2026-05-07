@@ -3,52 +3,68 @@ import random
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 
-def deal_card(card_on_hand):
-    card_on_hand.append(random.choice(cards))
+def deal_card(card_on_hand, number):
+    while number != 0:
+        card_on_hand.append(random.choice(cards))
+        number -= 1
 
-def count_value(cards):
-    total = 0
-    for card in cards:
-        total += card
-    return total
+def calculate_score(player_cards):
+    score = sum(player_cards)
+    aces = player_cards.count(11)
+    while aces != 0 and score > 21:
+        score -= 10
+        aces -= 1
+    return score
 
-def decide_winner(user, comp):
-    user_value = count_value(user)
-    comp_value = count_value(comp)
-    print(f"     Your final hand: {user}, final score: {user_value}\n"
-          f"     Computer's final hand: {comp}, final score: {comp_value}")
-    if user_value > comp_value:
+def decide_winner(user_cards, comp_cards):
+    user_score = calculate_score(user_cards)
+    comp_score = calculate_score(comp_cards)
+    print(f"     Your final hand: {user_cards}, final score: {user_score}\n"
+          f"     Computer's final hand: {comp_cards}, final score: {comp_score}")
+    if user_score > comp_score:
         print("You win")
-    elif user_value == comp_value:
+    elif user_score == comp_score:
         print("Draw")
-    elif comp_value > user_value:
+    elif user_score < comp_score:
         print("You lose")
 
+def show_score(user, comp):
+    print(f"     Your cards: {user}, current score: {calculate_score(user)}\n"
+          f"     Computer's card: {comp}")
+
 def blackjack():
-    play_blackjack = input("Do you want to play a game of Blackjack? type 'y' or 'n':  ")
-    if play_blackjack == "y":
-        pass
-    elif play_blackjack == "n":
-        print("Bye. Lets play later")
-        return
+    continue_game = True
+    while continue_game:
+        play_blackjack = input("Do you want to play a game of Blackjack? type 'y' or 'n':  ")
+        if play_blackjack == "y":
+            pass
+        elif play_blackjack == "n":
+            print("Bye. Lets play later")
+            return
 
-    print(art.logo)
+        print(art.logo)
+        user_hand = []
+        dealer_hand = []
 
-    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-    user_hand = []
-    dealer_hand = []
+        deal_card(user_hand, 2)
+        deal_card(dealer_hand, 1)
 
-    deal_card(user_hand)
-    deal_card(user_hand)
-    deal_card(dealer_hand)
-
-    print(f"     Your cards: {user_hand}, current score: {count_value(user_hand)}\n"
-          f"     Computer's first card: {dealer_hand}")
-
-    give_card = True
-    get_card = input("Type 'y' to get another card, type 'n' to pass: ")
-    if get_card == 'n':
+        show_score(user_hand, dealer_hand)
+        give_card = True
+        while give_card: # Player deal card
+            get_card = input("Type 'y' to get another card, type 'n' to pass: ")
+            if get_card == 'n':
+                give_card = False
+            elif get_card == 'y':
+                deal_card(user_hand, 1)
+                if calculate_score(user_hand) > 21:
+                    show_score(user_hand, dealer_hand)
+                    print("Busted. Your score > 21. You lose")
+                    give_card = False
+                else:
+                    show_score(user_hand, dealer_hand)
+        while calculate_score(dealer_hand) < 17:
+            deal_card(dealer_hand, 1)
         decide_winner(user_hand, dealer_hand)
-    elif get_card == 'y':
-        deal_card(user_hand)
-        get_card = input("Type 'y' to get another card, type 'n' to pass: ")
+
+blackjack()
