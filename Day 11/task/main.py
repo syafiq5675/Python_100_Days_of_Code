@@ -2,6 +2,7 @@ import art
 import random
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+blackjack = [11, 10]
 
 def deal_card(card_on_hand, number):
     while number != 0:
@@ -21,12 +22,16 @@ def decide_winner(user_cards, comp_cards):
     comp_score = calculate_score(comp_cards)
     print(f"     Your final hand: {user_cards}, final score: {user_score}\n"
           f"     Computer's final hand: {comp_cards}, final score: {comp_score}")
-    if user_score > comp_score:
+    if set(user_cards) == blackjack and len(user_cards) == 2:
+        print("Marvelous. You got black jack. you win")
+    elif user_score > 21:
+        print("You went over. You lose")
+    elif comp_score > 21 or user_score > comp_score:
         print("You win")
-    elif user_score == comp_score:
-        print("Draw")
     elif user_score < comp_score:
         print("You lose")
+    elif user_score == comp_score:
+        print("Draw")
 
 def show_score(user, comp):
     print(f"     Your cards: {user}, current score: {calculate_score(user)}\n"
@@ -57,14 +62,18 @@ def blackjack():
                 give_card = False
             elif get_card == 'y':
                 deal_card(user_hand, 1)
-                if calculate_score(user_hand) > 21:
-                    show_score(user_hand, dealer_hand)
-                    print("Busted. Your score > 21. You lose")
+                if calculate_score(user_hand) == 21:
+                    decide_winner(user_hand, dealer_hand)
+                    give_card = False
+                elif calculate_score(user_hand) > 21:
+                    decide_winner(user_hand, dealer_hand)
                     give_card = False
                 else:
                     show_score(user_hand, dealer_hand)
         while calculate_score(dealer_hand) < 17:
             deal_card(dealer_hand, 1)
-        decide_winner(user_hand, dealer_hand)
+        if calculate_score(user_hand) < 21:
+            decide_winner(user_hand, dealer_hand)
+
 
 blackjack()
