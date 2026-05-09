@@ -35,28 +35,40 @@ def compare(u_score, c_score):
         return "You lose 😤"
 
 def play_game():
-    play_game = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
-    if play_game == 'n':
-        print("Lets play later. bye!")
-        return
-    elif play_game == 'y':
-        pass
-
     print(art.logo)
     user_card = []
     computer_card = []
     is_game_over = False
 
-    while is_game_over is not True:
-        for _ in range (2):
-            user_card.append(deal_card())
-            computer_card.append(deal_card())
+    for _ in range(2):
+        user_card.append(deal_card())
+        computer_card.append(deal_card())
+        user_score = -1
+        comp_score = -1
 
+    while not is_game_over:
+        user_score = calculate_score(user_card)
+        comp_score = calculate_score(computer_card)
+        print(f"     Your cards: {user_card}, current score: {user_score}\n"
+              f"     Computer's first card: {computer_card[0]}")
 
+        if user_score == 0 or comp_score == 0 or user_score > 21:
+            is_game_over = True
+        else:
+            user_should_deal = input("Type 'y' to get another card, type 'n' to pass: ")
+            if user_should_deal == 'y':
+                user_card.append(deal_card())
+            else:
+                is_game_over = True
 
-        print(f"{user_card}, score : {calculate_score(user_card)}")
-        print(f"{computer_card}, score : {calculate_score(computer_card)}")
-        result = compare(calculate_score(user_card), calculate_score(computer_card))
-        print(result)
+    while comp_score <= 16 and comp_score != 0:
+        computer_card.append(deal_card())
+        comp_score = calculate_score(computer_card)
 
-play_game()
+    print(f"Your final hand: {user_card}, final score: {user_score}")
+    print(f"Computer's final hand: {computer_card}, final score: {comp_score}")
+    print(compare(user_score, comp_score))
+
+while input("Do you want to play a game of Blackjack? Type 'y' or 'n':  "):
+    print("\n" * 20)
+    play_game()
