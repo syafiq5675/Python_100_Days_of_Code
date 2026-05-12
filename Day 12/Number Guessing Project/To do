@@ -1,0 +1,3 @@
+Generate random number
+Create lives. Easy = 10 lives, hard = 5 lives
+is_game_over. As long as number is not correct, and lives > 0, False
