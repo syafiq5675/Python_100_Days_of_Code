@@ -1,0 +1,43 @@
+'name': 'Cristiano Ronaldo',
+        'follower_count': 215,
+        'description': 'Footballer',
+        'country': 'Portugal'
+
+A) Handle Random data
+1) Create a random number (Max number based on the dictionary)
+2) take the random number, and get the item based on the random number
+3) Extract the Detail of the random item
+4) Output 2 random data, data A and data B
+5) Assign it to 2 variables
+
+B) Game view. (Structure of the game)
+1) Always print Higher and lower inside the game
+2) print compare A (Get the details frrpm handle random data)
+3) print \n
+4) Print VS
+5) Print Against B (Get details from handle random data)
+
+C) Game flow.
+
+1) When the game runs. Logo are printed
+2) Random data are being picked
+3) Print vs
+4) random data are beiong picked
+5) Asked used, which have more follower
+6) User choose
+7) Decide which have more follower. A or B
+8) get the 2nd data, make it A, and get a random data, put into B
+9) Repeat this cycle until the user guessed in correctly. Track the user score. And display it
+10) If corrent, print You're right. Current score and proceed
+11) If wrong, Print Sorry, thats wrong. Display final score
+
+Noun
+- data
+- guess
+- score
+
+Verbs
+- pick random data
+- Extract data from dict and assign to variable
+- decide which have more follower
+-
