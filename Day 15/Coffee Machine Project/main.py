@@ -35,7 +35,14 @@ def check_resources(drink):
 # 3. If sufficient resources, prompt the user to insert coins. quarters (0.25), dimes (0.10), nickles (0.05), pennies (0.01) and return value
 
 def process_coins():
-    pass
+    quarters = int(input('How many quarters? : ')) * 0.25
+    dimes = int(input('How many dimes? : ')) * 0.1
+    nickles = int(input('How many nickels? : ')) * 0.05
+    pennies = int(input('How many pennies? : ')) * 0.01
+    return quarters + dimes + nickles + pennies
+
+paid = process_coins()
+print(paid)
 
 # 4.  store in money , return the balance if needed
 
