@@ -2,28 +2,6 @@ from pickle import GLOBAL
 
 from source import MENU as MENU
 
-ready = True
-
-# 1. Ask user what would they like?
-resources = {
-        "water": 300,
-        "milk": 200,
-        "coffee": 100,
-    }
-
-while not ready:
-    resources = {
-        "water": 300,
-        "milk": 200,
-        "coffee": 100,
-    }
-
-    # action = input("What would you like? (espresso/latte/cappucino): ")
-    # if action in MENU:
-    #     print(MENU[action])
-    print(MENU["espresso"]["ingredients"]["milk"])
-    ready = False
-
 # 2. When user answer, check the resources, if it is enough to make the drink
 
 def check_resources(drink):
@@ -46,26 +24,48 @@ def process_coins():
 # 4.  store in money , return the balance if needed
 
 def process_transactions(drink, payment, money):
+    global moneys
     price = MENU[drink]['cost']
-    money += price
-    return payment - price
+    print(type(price))
+    print(type(money))
+    moneys += price
+    return round(payment - price, 2)
 
 # 5. Make the coffee. Deduct the resources that is used, return the coffee and print Here is your {drink}. Enjoy!
 
 def make_coffee(drink, balance):
-    price = MENU[drink]['cost']
-    if balance > price or balance == price:
+    ingredients = MENU[drink]['ingredients']
+    if balance > 0 or balance == 0:
         print(f"Here is ${balance} dollars in change")
+        for ingredient, amount in ingredients.items():
+            resources[ingredient] -= amount
         return True
     else:
         print("Sorry that's not enough money. Money refunded.")
         return False
 
-
 # 6. Apart from the drink, make option to print report and switch off at the input
 
 def show_report():
-    pass
+    for resource, amount in resources.items():
+        print(f"{resource.capitalize()} : {amount}")
+    print(f"Money: ${moneys}")
+
+resources = {
+        "water": 300,
+        "milk": 200,
+        "coffee": 100,
+        }
+moneys = 0
 
 def run_coffee_machine():
-    pass
+    # 1. Ask user what would they like?
+
+    ready = True
+
+    while not ready:
+        action = input("What would you like? (espresso/latte/cappucino): ")
+        if action in MENU:
+            print(MENU[action])
+        print(MENU["espresso"]["ingredients"]["milk"])
+        ready = False
