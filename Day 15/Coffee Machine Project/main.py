@@ -1,6 +1,7 @@
-from pickle import GLOBAL
 
-from source import MENU as MENU
+from source import MENU, resources
+
+MONEYS = 0
 
 # 2. When user answer, check the resources, if it is enough to make the drink
 
@@ -24,11 +25,11 @@ def process_coins():
 # 4.  store in money , return the balance if needed
 
 def process_transactions(drink, payment, money):
-    global moneys
+    global MONEYS
     price = MENU[drink]['cost']
     print(type(price))
     print(type(money))
-    moneys += price
+    MONEYS += price
     return round(payment - price, 2)
 
 # 5. Make the coffee. Deduct the resources that is used, return the coffee and print Here is your {drink}. Enjoy!
@@ -49,23 +50,26 @@ def make_coffee(drink, balance):
 def show_report():
     for resource, amount in resources.items():
         print(f"{resource.capitalize()} : {amount}")
-    print(f"Money: ${moneys}")
-
-resources = {
-        "water": 300,
-        "milk": 200,
-        "coffee": 100,
-        }
-moneys = 0
+    print(f"Money: ${MONEYS}")
 
 def run_coffee_machine():
     # 1. Ask user what would they like?
 
     ready = True
 
-    while not ready:
-        action = input("What would you like? (espresso/latte/cappucino): ")
-        if action in MENU:
-            print(MENU[action])
-        print(MENU["espresso"]["ingredients"]["milk"])
-        ready = False
+    while ready:
+        order = (input("What would you like? (espresso/latte/cappucino): ")).lower()
+        if order == "off":
+            print("Bye and Come Again")
+            ready = False
+        elif order == "report":
+            show_report()
+        elif order == "espresso" or order == "latte" or order == "cappuccino" :
+            resource_status = check_resources(order)
+            if resource_status:
+                payment = process_coins()
+                balance = process_transactions(order, payment, MONEYS)
+                payment_sufficient = make_coffee(order, balance)
+
+
+run_coffee_machine()
