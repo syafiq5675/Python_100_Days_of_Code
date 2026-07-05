@@ -1,7 +1,7 @@
 
 from source import MENU, resources
 
-MONEYS = 0
+COFFEE_MONEY = 0
 
 # 2. When user answer, check the resources, if it is enough to make the drink
 
@@ -24,33 +24,33 @@ def process_coins():
 
 # 4.  store in money , return the balance if needed
 
-def process_transactions(drink, payment, money):
-    global MONEYS
+def process_transactions(drink, payment):
+    global COFFEE_MONEY
     price = MENU[drink]['cost']
-    print(type(price))
-    print(type(money))
-    MONEYS += price
-    return round(payment - price, 2)
-
-# 5. Make the coffee. Deduct the resources that is used, return the coffee and print Here is your {drink}. Enjoy!
-
-def make_coffee(drink, balance):
-    ingredients = MENU[drink]['ingredients']
-    if balance > 0 or balance == 0:
+    if payment >= price:
+        balance = round(payment - price, 2)
         print(f"Here is ${balance} dollars in change")
-        for ingredient, amount in ingredients.items():
-            resources[ingredient] -= amount
+        COFFEE_MONEY += price
         return True
     else:
         print("Sorry that's not enough money. Money refunded.")
         return False
+
+# 5. Make the coffee. Deduct the resources that is used, return the coffee and print Here is your {drink}. Enjoy!
+
+def make_coffee(drink):
+    ingredients = MENU[drink]['ingredients']
+    for ingredient, amount in ingredients.items():
+        resources[ingredient] -= amount
+    print(f"Here is your {drink} ☕. Enjoy!")
+    return True
 
 # 6. Apart from the drink, make option to print report and switch off at the input
 
 def show_report():
     for resource, amount in resources.items():
         print(f"{resource.capitalize()} : {amount}")
-    print(f"Money: ${MONEYS}")
+    print(f"Money: ${COFFEE_MONEY}")
 
 def run_coffee_machine():
     # 1. Ask user what would they like?
@@ -64,12 +64,15 @@ def run_coffee_machine():
             ready = False
         elif order == "report":
             show_report()
-        elif order == "espresso" or order == "latte" or order == "cappuccino" :
+        elif order in MENU :
             resource_status = check_resources(order)
             if resource_status:
                 payment = process_coins()
-                balance = process_transactions(order, payment, MONEYS)
-                payment_sufficient = make_coffee(order, balance)
+                payment_sufficient = process_transactions(order, payment)
+                if payment_sufficient:
+                    make_coffee(order)
+        else:
+            print("Please input only espresso, latte or cappuccino.")
 
 
 run_coffee_machine()
